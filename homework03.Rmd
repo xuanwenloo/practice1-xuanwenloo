@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
 #### Due: 2/17/2022 before 11:59pm. Submit in Canvas (file upload).
@@ -32,9 +33,45 @@ Note: your submission is supposed to be fully reproducible, i.e. the TA and I wi
 For the submission: submit your solution in an **R Markdown file** and (just for insurance) submit the corresponding html (or Word) file with it. 
 
 #### Part 1
+Team members:
+```{r}
+team_member <- matrix(c("Xuan Wen Loo", 'https://github.com/xuanwenloo/practice1-xuanwenloo', "Roy Khoo", 'https://github.com/roy-kcj/practice-roy-kcj'), ncol = 2, byrow = TRUE)
+colnames(team_member) <- c('Name','Github repository link')
+rownames(team_member) <- c('1','2')
+team_member <- as.table(team_member)
+team_member
+```
+
+I made 1 successful pull request to https://github.com/roy-kcj/practice-roy-kcj.
+
+I accepted 1 pull request in https://github.com/xuanwenloo/practice1-xuanwenloo.
+
+
+**3 tips of how to make working with git/github easier:**
+
+1. Use branches while adding new features before merging. This can avoid interfering the main code if there was an error.
+
+2. Utilize pull request to collaborate with others and keep track of changes.
+
+3. Write clear commit message to help others understand the changes.
 
 
 #### Part 2
+```{r}
+# Read the data
+data <- read.csv("https://raw.githubusercontent.com/yumouqiu/DS202-Spring2023/main/Lecture1_collaborative-environment/data/gapminder-5060.csv")
+
+# Fix Canada problematic value
+data %>% filter(year == 1957, country == 'Canada')
+fixed_data <- data %>% mutate(lifeExp = replace(lifeExp, year==1957, 69.96))
+canada <- fixed_data %>% filter(country == "Canada")
+View(canada)
+
+# Filter United States country and plot LifExp vs. gdpPercap
+us <- fixed_data %>% filter(country == "United States")
+us %>% ggplot(aes(x = gdpPercap, y = lifeExp, colour = country)) + geom_line() + geom_line(data = fixed_data %>% filter(country %in% c("Canada", "Australia")))
+
+```
 
 
 #### Part 3
